@@ -35,9 +35,8 @@ def create_dataset_manifest(context: OpExecutionContext,
     command = f'docker run -it --rm -v "{config.dataset_manifest_location}":"/local" --entrypoint python3 cvat/server utils/dataset_manifest/create.py --output-dir /local /local/images'
     context.log.info(command)
     try:
-        manifest_generation = subprocess.run(command, capture_output=True, check=True)
+        manifest_generation = subprocess.check_call(command)
         context.log.info(manifest_generation)
-        manifest_generation.check_returncode()
 
         if not os.path.isfile(os.path.join(config.dataset_manifest_location, 'manifest.jsonl')) or not os.path.isfile(os.path.join(config.dataset_manifest_location, 'index.json')):
             context.log.error('Manifest file was not created!')
