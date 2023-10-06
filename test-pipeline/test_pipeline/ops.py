@@ -35,7 +35,7 @@ def create_dataset_manifest(context: OpExecutionContext,
     command = f'docker run -it --rm -v "{config.dataset_manifest_location}":"/local" --entrypoint python3 cvat/server utils/dataset_manifest/create.py --output-dir /local /local/images'
     context.log.info(command)
     try:
-        manifest_generation = subprocess.run(command, check=True)
+        manifest_generation = subprocess.run(command, capture_output=True, check=True)
         context.log.info(manifest_generation)
         manifest_generation.check_returncode()
 
